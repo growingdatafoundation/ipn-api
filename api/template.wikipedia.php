@@ -3,13 +3,21 @@
 require_once('./Theme/Wikipedia.php');
 
 //Controller
-//http://en.wikipedia.org/w/api.php?action=opensearch&search=india
-$curl = new Connector();
-$response = $curl -> get('http://en.wikipedia.org/w/api.php', 
-	array(
-		'action' => 'opensearch', 
-		'search' => $tag));
-$response = (array)$response;
+//https://en.wikipedia.org/w/api.php?action=opensearch&search=india
+$curl = new \Api\Connector();
+$response = $curl->get('http://en.wikipedia.org/w/api.php', 
+    array(
+        'action' => 'opensearch', 
+        'search' => $tag
+    )
+);
+
+if($response->error()){
+    //do nothing
+    return;
+}
+
+$response = (array)$response->body;
 ?>
 <div class="links wikipedia">
 <?php if(!empty($response[1]) && count($response[1]) >= 1): ?>
@@ -17,8 +25,8 @@ $response = (array)$response;
 <?php endif; ?>
 <?php
 foreach((array) $response[1] as $key => $title){
-	$url = 'http://en.wikipedia.org/wiki/'.$title;
-	echo Wikipedia::renderEntryLink($url, $title);	
+    $url = 'https://en.wikipedia.org/wiki/'.$title;
+    echo Wikipedia::renderEntryLink($url, $title);  
 }
-?>	
+?>  
 </div>

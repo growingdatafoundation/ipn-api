@@ -1,0 +1,14 @@
+{
+    "config": {
+        "vendor-dir": "vendor/"
+    },
+    "require": {
+        "symfony/var-dumper": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Api\\": "api/"
+        }
+    }
+}
