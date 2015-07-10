@@ -47,7 +47,7 @@ class Connector{
         $result = curl_exec($ch);
         $this->validate($ch, $endpoint);
         $this->response->body = (!$raw) ? $this->parse($result) : $result;
-        
+        dump($endpoint);
         curl_close($ch);
         return $this->response;
 

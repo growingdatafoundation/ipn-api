@@ -23,7 +23,7 @@ if($response->error()){
     //do nothing
     return;
 }
-$response = $response->body;
+$response = (array)$response->body;
 
 $selected = array();
 foreach ($response->body as $value) {
