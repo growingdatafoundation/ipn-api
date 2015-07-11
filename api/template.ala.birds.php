@@ -26,6 +26,7 @@ if($response->error()){
 $response = (array)$response->body;
 
 $selected = array();
+
 foreach ($response as $value) {
     if($value->name == $species) {
         if($value->speciesCount > 0) {
