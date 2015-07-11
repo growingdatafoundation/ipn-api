@@ -26,7 +26,7 @@ if($response->error()){
 $response = (array)$response->body;
 
 $selected = array();
-foreach ($response->body as $value) {
+foreach ($response as $value) {
     if($value->name == $species) {
         if($value->speciesCount > 0) {
             $selected[] = $value;
