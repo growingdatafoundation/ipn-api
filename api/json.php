@@ -39,7 +39,7 @@ if (!isset($_GET['return'])) {// selected template
 
 $models = explode(',', $_GET['return']);
 $response = new StdClass;
-$response->status = array();
+
 foreach((array)$models as $model){
     $model = strtolower(trim($model));
     $namespace = explode('.', $model);
@@ -58,6 +58,7 @@ foreach((array)$models as $model){
  
 if (isset($_GET['dump'])) {// botanical name
     dump(json_decode(json_encode($response)));
+    //print json_encode($response, JSON_PRETTY_PRINT);
     exit(1);
 }
 
