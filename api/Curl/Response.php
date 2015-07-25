@@ -6,7 +6,7 @@ class Response{
     public $body;
     public $errors = array();
     
-    function construct(){
+    function __construct(){
     }
     
     public function error(){
