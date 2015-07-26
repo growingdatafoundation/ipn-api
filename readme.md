@@ -1,17 +1,6 @@
 * Base API: http://api.ala.org.au/
 * old repository: https://github.com/NatureNinjas/whatgrowshere
 
-```
-// simple request - fast
-
-/api?bname=Acacia&template=images.binomial
-
-// combine multipe data in one request - slow
-
-/api?bname=Acacia&template=images.binomial,ala.birds,wikipedia
-
-```
-
 # Install
 =========
 
@@ -53,32 +42,45 @@ Example json with `include=ala.species`
 ```javascript
 {
     "ala": {
-        "occurences": { // ala.occurences
-            "count": 107, // total records found
-            "_status": 200, // curl response status
+        // ala.occurences core module
+        "occurences": {
+            // total records found
+            "count": 107,
+            // curl response status 
+            "_status": 200, 
+            // occurences count by species: common name
+            // note, that many species have no common name
             "common_name": {
                 "Acacia Hedge": 4,
                 "Australian Golden Wattle": 13,
                     "Black Wattle": 16,
                     ...
                 },
+                // occurences count by species: taxonomy name
                 "taxon_name": {
                     "Acacia": 1,
                     "Acacia acinacea": 12,
                     ....
             }
         },
-        "species": { // ala.species
-            "_status": 200, //curl response status
+        // ala.species aggregator
+        "species": { 
+            //curl response status
+            "_status": 200,
+            // species module - species are indexed by taxonomy name
             "species": {
                 "Acacia": {
+                    // ala guid for further lookups
                     "guid": "urn:lsid:biodiversity.org.au:apni.taxon:295861",
                     "common_name": "Wattle",
+                    // native species
                     "isAustralian": "recorded",
                     "image": "http:\/\/bie.ala.org.au\/repo\/1009\/24\/250623\/raw.jpg",
                     "thumbnail": "http:\/\/bie.ala.org.au\/repo\/1009\/24\/250623\/thumbnail.jpg"
+                    // density map module
                     "densityMap": {
-                        "australia": "http:\/\/biocache.ala.org.au\/ws\/density\/map?q=Acacia" // png image
+                        // Australia - png image
+                        "australia": "http:\/\/biocache.ala.org.au\/ws\/density\/map?q=Acacia"
                     }
                 },
                 "Acacia acinacea": {
