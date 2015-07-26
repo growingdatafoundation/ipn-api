@@ -27,21 +27,16 @@ class Connector{
     
     public $error;
 
-    public function get($uri, $params, $raw = false) {
+    public function get($uri, $params = null, $raw = false) {
         
         //reset response
         $this->response = new Curl\Response();
         
-        //request
-        $endpoint = $uri . '?'.  implode('&', $this->params($params));
-
-        $ch = curl_init();
-        $timeout = 60;
+        //endpoint
+        $endpoint = $this->endpoint($uri, $params);
         
-        curl_setopt($ch, CURLOPT_URL, $endpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        //curl
+        $ch = $this->curlInit($endpoint);
         
         //response
         $result = curl_exec($ch);
@@ -50,6 +45,52 @@ class Connector{
         curl_close($ch);
         return $this->response;
 
+    }
+
+    public function post($uri, $params = null, $data, $raw = false) {
+        
+        //reset response
+        $this->response = new Curl\Response();
+        
+        //endpoint
+        $endpoint = $this->endpoint($uri, $params);
+        
+        //curl
+        $json = json_encode($data);
+        $ch = $this->curlInit($endpoint);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Content-Type: application/json',                                                                                
+            'Content-Length: ' . strlen($json))                                                                       
+        );  
+        //response
+        $result = curl_exec($ch);
+        $this->validate($ch, $endpoint);
+        $this->response->body = (!$raw) ? $this->parse($result) : $result;
+        curl_close($ch);
+        return $this->response;
+
+    }
+  
+    private function curlInit($endpoint){
+        $ch = curl_init();
+        $timeout = 60;
+        
+        curl_setopt($ch, CURLOPT_URL, $endpoint);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        return $ch;
+    }
+    
+    private function endpoint($uri, $params = null){
+        $q = null;
+        if(is_array($params) && !empty($params)){
+            $q = '?'.  implode('&', $this->params($params));
+        }
+        return $uri .$q;
     }
     
     private function params($params = array()){
