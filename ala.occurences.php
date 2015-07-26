@@ -1,6 +1,6 @@
 <?php
 /**
- * /api/json.php?return=ala.occurences,ala.details&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5
+ * /ala.occurences.php?include=ala.details&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5&dump=1
  */
 define('CONFIG_DEBUG', true);
 
@@ -8,8 +8,8 @@ if(CONFIG_DEBUG){
     ini_set('display_errors', 1); 
     error_reporting(E_ALL);
 }
-require_once ('../vendor/autoload.php');
-require_once ('../ApiConfig.php');
+require_once ('./vendor/autoload.php');
+require_once ('./ApiConfig.php');
 
 
 
@@ -33,21 +33,33 @@ if (!isset($_GET['radius'])) {// latitude
     \Api\Config::out(400, 'Invalid parameters: `lat` required.');
 }
 
-if (!isset($_GET['return'])) {// selected template
-    \Api\Config::out(400, 'Invalid parameters: `return` required.');
+if (!isset($_GET['include'])) {// selected template
+    \Api\Config::out(400, 'Invalid parameters: `include` required.');
 }
 
-$models = explode(',', $_GET['return']);
-$response = new StdClass;
 
-foreach((array)$models as $model){
-    $model = strtolower(trim($model));
-    $namespace = explode('.', $model);
+$response = new StdClass;
+$response->ala = new StdClass;
+$response->ala->occurences = new \Api\Ala\Occurences($_GET);
+
+// get species names
+$species = array_keys($response->ala->occurences->taxon_name);
+
+/**
+ * Additional modules
+ */
+ 
+$modules = explode(',', $_GET['include']);
+foreach((array)$modules as $module){
+    $module = strtolower(trim($module));
+    $namespace = explode('.', $module);
     $service = '\\Api\\'.ucfirst($namespace[0]).'\\'.ucfirst($namespace[1]);
 
     if(class_exists($service)){
-        $data = new $service($_GET);
-        $response->{$namespace[0]} = new StdcLass;
+        $data = new $service(array('taxon_name' => $species));
+        if(!isset($response->{$namespace[0]})){
+            $response->{$namespace[0]} = new StdcLass;
+        }
         $response->{$namespace[0]}->{$namespace[1]} = $data;
     }
 }
