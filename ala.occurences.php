@@ -5,18 +5,16 @@
 define('CONFIG_DEBUG', true);
 
 if(CONFIG_DEBUG){
-    ini_set('display_errors', 1); 
+    ini_set('display_errors', 1);
     error_reporting(E_ALL);
 }
 require_once ('./vendor/autoload.php');
 require_once ('./ApiConfig.php');
 
-
-
 /**
  * Request > Validation, required params
  */
- 
+
 if (!isset($_GET['bname'])) {// botanical name
     \Api\Config::out(400, 'Invalid parameters: `bname` required.');
 }
@@ -48,7 +46,7 @@ $species = array_keys($response->ala->occurences->taxon_name);
 /**
  * Additional modules
  */
- 
+
 $modules = explode(',', $_GET['include']);
 foreach((array)$modules as $module){
     $module = strtolower(trim($module));
@@ -67,7 +65,7 @@ foreach((array)$modules as $module){
 /**
  * Dump
  */
- 
+
 if (isset($_GET['dump'])) {// botanical name
     dump(json_decode(json_encode($response)));
     //print json_encode($response, JSON_PRETTY_PRINT);
@@ -89,4 +87,3 @@ exit(1);
 /**
  * Response > include templates
  */
- 

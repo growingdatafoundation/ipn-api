@@ -14,11 +14,10 @@ composer install
 
 Recomended: The `ApiConfig.php` should be moved out of the `htdocs`. Update the `require_once` directive for this file the index.php accordingly.
 
-
-## ALA Occurences aggregator API
+# ALA Occurences aggregator API
 
 ```
-/ala.occurences.php?include=ala.species&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5&dump=1
+/ala.occurences.php?include=ala.species&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5
 ```
 params:
 
@@ -46,8 +45,8 @@ Example json with `include=ala.species`
         "occurences": {
             // total records found
             "count": 107,
-            // curl response status 
-            "_status": 200, 
+            // curl response status
+            "_status": 200,
             // occurences count by species: common name
             // note, that many species have no common name
             "common_name": {
@@ -64,7 +63,7 @@ Example json with `include=ala.species`
             }
         },
         // ala.species aggregator
-        "species": { 
+        "species": {
             //curl response status
             "_status": 200,
             // species module - species are indexed by taxonomy name
@@ -98,3 +97,13 @@ Example json with `include=ala.species`
     }
 }
 ```
+
+# Mongo Cache
+
+ A simple Mongo cache api is in development and is located in `\Api\Cache.php`. Currently this Api requires a local Mongo server which you need to set up.
+
+ TODO:
+
+  * expiry
+  * remote Mongo
+  * hook up to `ala.species`

@@ -1,34 +1,31 @@
 <?php
 namespace Api\Ala;
 
-class BulkSpeciesLookup{
-    
+class BulkSpeciesLookup extends AlaBase{
+
     private $body;
     public $_status = false;
     public $species = array();
+
     function __construct($request){
-        
-        $names = (!is_array($request['taxon_name'])) ? explode(',', $request['taxon_name']) : $request['taxon_name'];
-   
-        for($i=0; $i < count($names); $i++){
-            $names[$i] = trim($names[$i]);
-        }
-        
+        parent::__construct();
+        $names = self::parseCommaSeparatedParam($request, 'taxon_name');
+
         $this->request($names);
         $this->compile();
     }
-    
+
     public function request($names){
         $curl = new \Api\Connector();
         $response = $curl->post(
-            'http://bie.ala.org.au/ws/species/lookup/bulk', 
+            'http://bie.ala.org.au/ws/species/lookup/bulk',
             null,
             array('names' => $names)
         );
         $this->_status = $response->status;
         $this->body = $response->body;
     }
-    
+
     //Genus:Acacia => totalRecords:107, common_name results: 100, raw_taxonomy_name results 107!
     public function compile(){
         foreach($this->body as $item){
@@ -40,9 +37,9 @@ class BulkSpeciesLookup{
             $this->species[$item->name]->thumbnail     = $this->property('thumbnail', $item);
         }
     }
-    
+
     private function property($property, $item){
         return (isset($item->{$property})) ? $item->{$property} : null;
     }
-    
+
 }
