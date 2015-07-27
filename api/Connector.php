@@ -2,7 +2,7 @@
 namespace Api;
 use \Api\Curl as Curl;
 
-/** 
+/**
  * Example:
     $curl = \Api\new Connector();
     $result = $curl->get(
@@ -14,30 +14,31 @@ use \Api\Curl as Curl;
             'format' => 'json',
             'nojsoncallback' => '1'
         )
-        
+
     );
 */
 
 class Connector{
-    
+
     public $response;
-    
+    const CurlConnectTimeout = 20;//seconds
+
     function __construct() {
     }
-    
+
     public $error;
 
     public function get($uri, $params = null, $raw = false) {
-        
+
         //reset response
         $this->response = new Curl\Response();
-        
+
         //endpoint
         $endpoint = $this->endpoint($uri, $params);
-        
+
         //curl
         $ch = $this->curlInit($endpoint);
-        
+
         //response
         $result = curl_exec($ch);
         $this->validate($ch, $endpoint);
@@ -48,23 +49,23 @@ class Connector{
     }
 
     public function post($uri, $params = null, $data, $raw = false) {
-        
+
         //reset response
         $this->response = new Curl\Response();
-        
+
         //endpoint
         $endpoint = $this->endpoint($uri, $params);
-        
+
         //curl
         $json = json_encode($data);
         $ch = $this->curlInit($endpoint);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-            'Content-Type: application/json',                                                                                
-            'Content-Length: ' . strlen($json))                                                                       
-        );  
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($json))
+        );
         //response
         $result = curl_exec($ch);
         $this->validate($ch, $endpoint);
@@ -73,18 +74,17 @@ class Connector{
         return $this->response;
 
     }
-  
+
     private function curlInit($endpoint){
         $ch = curl_init();
-        $timeout = 60;
-        
-        curl_setopt($ch, CURLOPT_URL, $endpoint);
+
+        curl_setopt($ch, CURLOPT_URL, self::CurlConnectTimeout);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         return $ch;
     }
-    
+
     private function endpoint($uri, $params = null){
         $q = null;
         if(is_array($params) && !empty($params)){
@@ -92,15 +92,15 @@ class Connector{
         }
         return $uri .$q;
     }
-    
+
     private function params($params = array()){
         $encoded = array();
         foreach ($params as $k => $v){
-             $encoded[] = urlencode($k).'='.urlencode($v); 
+             $encoded[] = urlencode($k).'='.urlencode($v);
         }
         return $encoded;
     }
-    
+
     private function parse($result){
         return json_decode($result);
     }
@@ -119,16 +119,16 @@ class Connector{
             $this->response->errors[] = 'Curl error: ' . curl_errno($curl) . ': ' . curl_error($curl).', endpoint:'.$endpoint;
             return false;
         }
-        
+
         switch($this->response->status) {
             case 200 :
                 return true;
             default :
                 return false;
         }
-        
+
         return false;
-        
+
     }//f
 
 }//c
