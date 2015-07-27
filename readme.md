@@ -4,15 +4,17 @@
 # Install
 =========
 
-1. Install dependencies
+* Install dependencies
 
 ```
 composer install
 ```
 
-2. Rename `example.ApiConfig.php` to `ApiConfig.php` and fill in your Api Keys.
+* Rename `example.ApiConfig.php` to `ApiConfig.php` and fill in your Api Keys.
 
 Recomended: The `ApiConfig.php` should be moved out of the `htdocs`. Update the `require_once` directive for this file the index.php accordingly.
+
+* if you want to use the Mongo cache you currently need to install MongoDB on your server and install the PHP Mongo drivers
 
 # ALA Occurences aggregator API
 
