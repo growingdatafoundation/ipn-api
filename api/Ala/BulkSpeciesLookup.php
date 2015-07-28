@@ -5,6 +5,8 @@ class BulkSpeciesLookup extends AlaBase{
 
     private $body;
     public $_status = false;
+
+    public $_status = false;
     public $species = array();
 
     function __construct($request){
@@ -31,6 +33,7 @@ class BulkSpeciesLookup extends AlaBase{
         foreach($this->body as $item){
             $this->species[$item->name]                = new \StdClass;
             $this->species[$item->name]->guid          = $this->property('guid', $item);
+            $this->species[$item->name]->name          = $this->property('name', $item);
             $this->species[$item->name]->common_name   = $this->property('commonNameSingle', $item);
             $this->species[$item->name]->isAustralian  = $this->property('isAustralian', $item);
             $this->species[$item->name]->image         = $this->property('image', $item);

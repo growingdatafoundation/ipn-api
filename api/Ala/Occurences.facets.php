@@ -12,6 +12,8 @@ namespace Api\Ala;
 class Occurences extends AlaBase{
 
     private $body;
+    public $_status = false;
+
     public $totalRecords = 0;
     public $status = false;
     public $results = array(

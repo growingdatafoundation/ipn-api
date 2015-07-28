@@ -46,10 +46,10 @@ Example response with `include=ala.species`
     "ala": {
         // ala.occurences core module
         "occurences": {
-            // total records found
-            "count": 107,
             // curl response status
             "_status": 200,
+            // total records found
+            "count": 107,
             // occurences count by species: common name
             // note, that many species have no common name
             "common_name": {
@@ -67,7 +67,7 @@ Example response with `include=ala.species`
         },
         // ala.species aggregator
         "species": {
-            //curl response status
+            // curl response status
             "_status": 200,
             // species module - species are indexed by taxonomy name
             "species": {
@@ -106,7 +106,7 @@ Example response with `include=ala.species`
  * returns information for a species
 
 ```
-/ala.species.php?bname=Acacia+penninervis
+/ala.species.php?taxon_name=Acacia+penninervis
 ```
 
 Params:
@@ -114,15 +114,17 @@ Params:
  * `taxon_name`: taxonomy name
  * `dump` (optional, debug!): pretty-dumps json for debugging
 
-Example response:
+### Example response:
 
 ```javascript
 {
     "ala": {
         "species": {
+            // curl response status
             "_status": 200,
             "species": {
                 "Acacia penninervis": {
+                    // taxonomy concept id: see ala.species.details
                     "guid": "urn:lsid:biodiversity.org.au:apni.taxon:298661",
                     "common_name": "Hickory",
                     "isAustralian": "recorded",
@@ -152,12 +154,14 @@ Params:
  * `rad`: radius
  * `dump` (optional, debug!): pretty-dumps json for debugging
 
-Example response:
+### Example response:
 
 ```
 {
     "ala": {
         "explore": {
+            // curl response status
+            "_status": 200,
             //all species
             "count": 105858,
             //sorted by groups
@@ -184,11 +188,140 @@ Example response:
                 " Protozoa": 8,
                 " Bacteria": 0,
                 " Algae": 13
-            },
-            "_status": 200
+            }
         }
     }
 }
+```
+
+## ala.species.details
+
+```javascript
+// Acacia penninervis
+/ala.species.details.php?guid=urn:lsid:biodiversity.org.au:apni.taxon:298661&dump=1
+```
+* rturns details about a species: description, images, conservation status, links classifications etc
+
+Params:
+
+ * `guid`: The guid for the taxon concept, returned by **ala.species** lookup
+ * `dump` (optional, debug!): pretty-dumps json for debugging
+
+### Example response:
+
+```javascript
+{
+    "ala": {
+        "species": {
+            "details": {,
+                // curl response status
+                "_status": 200,
+                "name": "Acacia penninervis",
+                "isAustralian": true,
+                // properties are string or null
+                "classification": {
+                    "kingdom": "Plantae",
+                    "phylum": "Charophyta",
+                    "class_": "Equisetopsida",
+                    "order": "Fabales",
+                    "family": "Fabaceae",
+                    "genus": "Acacia",
+                    "species": "Acacia penninervis"
+                ...
+                },
+                // array of common_names
+                "commonNames": [
+                    "Hickory",
+                    "Hickory Wattle",
+                    "Mountain Hickory",
+                    "Native Hickory",
+                    "Mountain Hickory"
+                ...
+                ],
+                // conservation statuses by region empty array if no data, seea  populated example below
+                "conservationStatuses": [
+                ],
+                "descriptions": {
+                    "Description": "Erect or spreading shrub or tree mostly 2\u20138 m high; bark finely or deeply fissured, dark grey; branchlets \u00b1 terete, glabrous, sometimes pruinose.",
+                    "Distribution": "Widespread, especially in inland divisions.",
+                    "Flowering Season": "Flowers throughout year"
+                ...
+                },
+                // empty array if no data
+                "references": [
+                    {
+                        "source": "Wikipedia",
+                        "title": "Acacia penninervis",
+                        "url": "http:\/\/en.wikipedia.org\/wiki\/Acacia_penninervis"
+                    }
+                ...
+                ],
+                // empty array if no data
+                "images": [
+                    {
+                        "source": null,
+                        "contentType": "image\/jpeg",
+                        "thumbnail": "http:\/\/bie.ala.org.au\/repo\/1051\/187\/1874162\/thumbnail.jpg",
+                        "title": "Acacia penninervis"
+                    },
+                ...
+                ]
+            }
+        }
+    }
+}
+```
+
+### conservation data status example:
+
+example of pouplated array for an endangered species: Macrotis lagotis (Bilby): `/ala.species.details.php?guid=urn:lsid:biodiversity.org.au:afd.taxon:3814d122-c95f-467f-a3a2-2b269931b74f&dump=1`
+
+```javascript
+{
+    "ala": {
+        "species": {
+            "details": {
+                // ... other properties ...
+
+                "conservationStatuses": {
+                    "New South Wales": {
+                        "system": "Threatened Species Conservation Act 1995",
+                        "status": "Presumed Extinct",
+                        "rawCode": "E4"
+                    },
+                    "Australia": {
+                        "system": "The Environment Protection and Biodiversity Conservation Act 1999",
+                        "status": "Vulnerable",
+                        "rawCode": null
+                    },
+                    "Queensland": {
+                        "system": "Nature Conservation Act 1992",
+                        "status": "Endangered",
+                        "rawCode": "E"
+                    },
+                    "South Australia": {
+                        "system": "National Parks and Wildlife Act 1972",
+                        "status": "Vulnerable",
+                        "rawCode": "V"
+                    },
+                    "Northern Territory": {
+                        "system": "Territory Parks and Wildlife Conservation Act 2000",
+                        "status": "Vulnerable",
+                        "rawCode": null
+                    },
+                    "Western Australia": {
+                        "system": "Wildlife Conservation Act 1950",
+                        "status": "Vulnerable",
+                        "rawCode": "VU"
+                    }
+                },
+
+                // ... other properties ...
+            }
+        }
+    }
+}
+
 ```
 
 # Mongo Cache

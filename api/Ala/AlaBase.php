@@ -26,8 +26,8 @@ class AlaBase{
         return $names;
     }
 
-    protected function property($property, $item){
-        return (isset($item->{$property})) ? $item->{$property} : null;
+    protected function property($property, $item, $returnEmpty = null){
+        return (isset($item->{$property})) ? $item->{$property} : $returnEmpty;
     }
 
 }

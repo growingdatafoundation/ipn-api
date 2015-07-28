@@ -9,23 +9,23 @@ require_once ('./bootstrap.php');
  * Request > Validation, required params
  */
 
-if (!isset($_GET['taxon_name'])) {// taxonomy name
-    \Api\View::out(400, 'Invalid parameters: `taxon_name` required.');
+if (!isset($_GET['guid'])) {// longitude
+    \Api\View::out(400, 'Invalid parameters: `guid` required.');
 }
 
 $aggregator = new \Api\Aggregator();
 
-$species = new \Api\Ala\Species($_GET);
-$aggregator->set('ala.species', $species);
+$groups = new \Api\Ala\Species\Details($_GET);
+$aggregator->set('ala.species.details', $groups);
 
 /**
  * Debug: Dump
  */
 
 if (isset($_GET['dump'])) {
-     \Api\View::serviceHeaders('html');
-    dump(json_decode(json_encode($aggregator)));
-    //print json_encode($aggregator, JSON_PRETTY_PRINT);
+    \Api\View::serviceHeaders('html');
+    //dump(json_decode(json_encode($aggregator)));
+    print json_encode($aggregator, JSON_PRETTY_PRINT);
     exit(1);
 }
 
@@ -34,5 +34,6 @@ if (isset($_GET['dump'])) {
  */
 
 \Api\View::serviceHeaders();
+
 print json_encode($aggregator);
 exit(1);

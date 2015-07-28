@@ -22,36 +22,34 @@ if (!isset($_GET['lat'])) {// latitude
 }
 
 if (!isset($_GET['radius'])) {// latitude
-    \Api\View::out(400, 'Invalid parameters: `lat` required.');
+    \Api\View::out(400, 'Invalid parameters: `radius` required.');
 }
 
 if (!isset($_GET['include'])) {// selected template
     \Api\View::out(400, 'Invalid parameters: `include` required.');
 }
 
-$response = new StdClass;
-$response->ala = new StdClass;
-$response->ala->occurences = new \Api\Ala\Occurences($_GET);
+$aggregator = new \Api\Aggregator();
 
-// get species names
-$species = array_keys($response->ala->occurences->taxon_name);
+/**
+ * Base Module: Occurences
+ */
+
+$occurences = new \Api\Ala\Occurences($_GET);
+$aggregator->set('ala.occurences', $occurences);
 
 /**
  * Additional modules
  */
+ // get species names for included modules
+$species = array_keys($occurences->taxon_name);
+$modules = $aggregator->parseModules($_GET['include']);
 
-$modules = explode(',', $_GET['include']);
 foreach((array)$modules as $module){
-    $module = strtolower(trim($module));
-    $namespace = explode('.', $module);
-    $service = '\\Api\\'.ucfirst($namespace[0]).'\\'.ucfirst($namespace[1]);
-
+    $service = $aggregator->moduleToNamespacedClass($module);
     if(class_exists($service)){
         $data = new $service(array('taxon_name' => $species));
-        if(!isset($response->{$namespace[0]})){
-            $response->{$namespace[0]} = new StdcLass;
-        }
-        $response->{$namespace[0]}->{$namespace[1]} = $data;
+        $aggregator->set($module, $data);
     }
 }
 
@@ -61,8 +59,8 @@ foreach((array)$modules as $module){
 
 if (isset($_GET['dump'])) {// botanical name
     \Api\View::serviceHeaders('html');
-    dump(json_decode(json_encode($response)));
-    //print json_encode($response, JSON_PRETTY_PRINT);
+    dump(json_decode(json_encode($aggregator)));
+    //print json_encode($aggregator, JSON_PRETTY_PRINT);
     exit(1);
 }
 
@@ -72,5 +70,5 @@ if (isset($_GET['dump'])) {// botanical name
 
 \Api\View::serviceHeaders();
 
-print json_encode($response);
+print json_encode($aggregator);
 exit(1);

@@ -3,6 +3,7 @@
 - wikipedia
 - wkt
 - sorting?
+- whitelist aggregator modules
 
 # v 0.2.0
 

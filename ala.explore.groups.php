@@ -18,12 +18,13 @@ if (!isset($_GET['lat'])) {// latitude
 }
 
 if (!isset($_GET['radius'])) {// latitude
-    \Api\View::out(400, 'Invalid parameters: `lat` required.');
+    \Api\View::out(400, 'Invalid parameters: `radius` required.');
 }
 
-$response = new StdClass;
-$response->ala = new StdClass;
-$response->ala->explore = new \Api\Ala\Explore\Groups($_GET);
+$aggregator = new \Api\Aggregator();
+
+$groups = new \Api\Ala\Explore\Groups($_GET);
+$aggregator->set('ala.explore.groups', $groups);
 
 /**
  * Debug: Dump
@@ -31,8 +32,8 @@ $response->ala->explore = new \Api\Ala\Explore\Groups($_GET);
 
 if (isset($_GET['dump'])) {// botanical name
     \Api\View::serviceHeaders('html');
-    dump(json_decode(json_encode($response)));
-    //print json_encode($response, JSON_PRETTY_PRINT);
+    dump(json_decode(json_encode($aggregator)));
+    //print json_encode($aggregator, JSON_PRETTY_PRINT);
     exit(1);
 }
 
@@ -42,5 +43,5 @@ if (isset($_GET['dump'])) {// botanical name
 
 \Api\View::serviceHeaders();
 
-print json_encode($response);
+print json_encode($aggregator);
 exit(1);
