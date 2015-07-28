@@ -1,8 +1,15 @@
 <?php
 namespace Api;
 
+define('CONFIG_DEBUG', true);
+
+if(CONFIG_DEBUG){
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+}
+
 class Config extends \APiConfig{
-    
+
     public static $httpCodes = array(
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -60,34 +67,42 @@ class Config extends \APiConfig{
         509 => 'Bandwidth Limit Exceeded',
         510 => 'Not Extended'
     );
-    
+
     public static function statusMessage($status){
         if(isset(self::$httpCodes[$status])){
             return self::$httpCodes[$status];
         }
         return NULL;
     }
-    
-    public static function out($status, $body = NULL) {
 
+    public static function out($status, $body = NULL) {
         $statusMessage = self::statusMessage($status);
         header('HTTP/1.1 ' . $status. ' ' . $statusMessage, true, $status);
-        
         if(is_object($body) || is_array($body)){
             header('Content-Type: application/json');
             $body = json_encode($body);
         }
-        
         // errors
         if($status >= 300){
             $body = ($body && trim($body) != '') ? $body : $statusMessage;
         }
-        
         if($body){
             print $body;
         }
-    
         exit(0);
     }
-    
+
+    public static function serviceHeaders($content = 'json'){
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET,HEAD,OPTIONS');
+        header('Access-Control-Allow-Headers: Origin,Content-Type,Accept,If-Match,If-None-Match');
+        switch($content){
+            case 'html':
+                header('Content-Type: text/html; charset=utf-8');
+            break;
+            default:
+                header('Content-type: application/json');
+        }
+    }
+
 };

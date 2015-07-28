@@ -21,7 +21,8 @@ Recomended: The `ApiConfig.php` should be moved out of the `htdocs`. Update the 
 ```
 /ala.occurences.php?include=ala.species&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5
 ```
-params:
+
+Params:
 
  * `include`: modules to include (see below), multiple dataset can becombined as a comm-separated list
  * `bname`: binomial name search (starts with), currently interpreted as [genus](https://en.wikipedia.org/wiki/Genus)
@@ -35,10 +36,10 @@ params:
 
 ## ala.occurences
 
- * returns lists of occurrence counts of queried specimen for location
+ * returns lists of occurrence counts of queried specimen for a given location
 
 
-Example json with `include=ala.species`
+Example response with `include=ala.species`
 
 ```javascript
 {
@@ -95,6 +96,96 @@ Example json with `include=ala.species`
                     }
                 },
                 ....
+        }
+    }
+}
+```
+
+## ala.species
+
+ * returns information for a species
+
+```
+/ala.species.php?bname=Acacia+penninervis
+```
+
+Params:
+
+ * `taxon_name`: taxonomy name
+ * `dump` (optional, debug!): pretty-dumps json for debugging
+
+Example response:
+
+```javascript
+{
+    "ala": {
+        "species": {
+            "_status": 200,
+            "species": {
+                "Acacia penninervis": {
+                    "guid": "urn:lsid:biodiversity.org.au:apni.taxon:298661",
+                    "common_name": "Hickory",
+                    "isAustralian": "recorded",
+                    "image": "http:\/\/bie.ala.org.au\/repo\/1051\/187\/1874162\/raw.jpg",
+                    "thumbnail": "http:\/\/bie.ala.org.au\/repo\/1051\/187\/1874162\/thumbnail.jpg",
+                    "densityMap": {
+                        "australia": "http:\/\/biocache.ala.org.au\/ws\/density\/map?q=Acacia+penninervis"
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+## ala.explore.groups
+
+```
+/ala.explore.groups.php?lat=-34.928726&lon=138.59994&radius=5&dump=1
+```
+* returns counts of all species groups for a given location
+
+Params:
+
+ * `lat`: latitude
+ * `lon`: longitude
+ * `rad`: radius
+ * `dump` (optional, debug!): pretty-dumps json for debugging
+
+Example response:
+
+```
+{
+    "ala": {
+        "explore": {
+            //all species
+            "count": 105858,
+            //sorted by groups
+            "groups": {
+                " Animals": 99633,
+                " Mammals": 341,
+                " Birds": 93738,
+                " Reptiles": 135,
+                " Amphibians": 498,
+                " Fish": 173,
+                " Molluscs": 148,
+                " Arthropods": 4558,
+                " Crustaceans": 13,
+                " Insects": 3759,
+                " Plants": 5405,
+                " Bryophytes": 29,
+                " Gymnosperms": 15,
+                " Ferns And Allies": 21,
+                " Angiosperms": 5304,
+                " Monocots": 1674,
+                " Dicots": 3630,
+                " Fungi": 116,
+                " Chromista": 18,
+                " Protozoa": 8,
+                " Bacteria": 0,
+                " Algae": 13
+            },
+            "_status": 200
         }
     }
 }

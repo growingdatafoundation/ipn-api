@@ -1,6 +1,13 @@
 <?php
 namespace Api\Ala;
 
+/**
+ * http://biocache.ala.org.au/ws/occurrences/search
+ * Compiles an extract of occurences for a species name search term.
+ * Occurences counts will be listed in two arrays, by taxon_name and common_name.
+ * The most complete result will be the taxon_name occurences as not all species have a common_name
+ */
+
 class Occurences extends AlaBase{
 
     private $body;
@@ -16,7 +23,7 @@ class Occurences extends AlaBase{
     }
 
     public function request($request){
-        $curl = new \Api\Connector();
+        $curl = new \Api\Curl\Client();
         $response = $curl->get(
             'http://biocache.ala.org.au/ws/occurrences/search',
             array(

@@ -1,10 +1,9 @@
 <?php
-namespace Api;
-use \Api\Curl as Curl;
+namespace Api\Curl;
 
 /**
  * Example:
-    $curl = \Api\new Connector();
+    $curl = new \Api\Curl\Client();
     $result = $curl->get(
         'https://api.flickr.com/services/rest/',
         array(
@@ -18,7 +17,7 @@ use \Api\Curl as Curl;
     );
 */
 
-class Connector{
+class Client{
 
     public $response;
     const CurlConnectTimeout = 20;//seconds
@@ -31,7 +30,7 @@ class Connector{
     public function get($uri, $params = null, $raw = false) {
 
         //reset response
-        $this->response = new Curl\Response();
+        $this->response = new Response();
 
         //endpoint
         $endpoint = $this->endpoint($uri, $params);
@@ -51,7 +50,7 @@ class Connector{
     public function post($uri, $params = null, $data, $raw = false) {
 
         //reset response
-        $this->response = new Curl\Response();
+        $this->response = new Response();
 
         //endpoint
         $endpoint = $this->endpoint($uri, $params);

@@ -16,7 +16,7 @@ class BulkSpeciesLookup extends AlaBase{
     }
 
     public function request($names){
-        $curl = new \Api\Connector();
+        $curl = new \Api\Curl\Client();
         $response = $curl->post(
             'http://bie.ala.org.au/ws/species/lookup/bulk',
             null,
@@ -37,9 +37,4 @@ class BulkSpeciesLookup extends AlaBase{
             $this->species[$item->name]->thumbnail     = $this->property('thumbnail', $item);
         }
     }
-
-    private function property($property, $item){
-        return (isset($item->{$property})) ? $item->{$property} : null;
-    }
-
 }

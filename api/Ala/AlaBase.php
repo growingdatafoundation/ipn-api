@@ -16,17 +16,18 @@ class AlaBase{
      * @return array
      */
     public static function parseCommaSeparatedParam($param, $key = false){
-
         if($key){
             $param = $param[$key];
         }
-
         $names = (!is_array($param)) ? explode(',', $param) : $param;
-
         for($i = 0; $i < count($names); $i++){
             $names[$i] = trim($names[$i]);
         }
         return $names;
+    }
+
+    protected function property($property, $item){
+        return (isset($item->{$property})) ? $item->{$property} : null;
     }
 
 }

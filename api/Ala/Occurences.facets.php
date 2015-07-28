@@ -1,5 +1,12 @@
 <?php
-// @TODO unfinished
+/*
+ * http://biocache.ala.org.au/ws/occurrence/facets
+ * @TODO unfinished
+ * This call is much faster than http://biocache.ala.org.au/ws/occurrences/search, however the results differ greatly
+ * Genus:Acacia => totalRecords:107, common_name results: 100, raw_taxonomy_name results 107!
+ * Not implemented until it's clear why the difference
+ */
+
 namespace Api\Ala;
 
 class Occurences extends AlaBase{
@@ -18,7 +25,7 @@ class Occurences extends AlaBase{
     }
 
     public function get($request){
-        $curl = new \Api\Connector();
+        $curl = new \Api\Curl\Client();
         $response = $curl->get('http://biocache.ala.org.au/ws/occurrence/facets',
             array(
                 'q' => 'genus:'.$request['bname'],
@@ -42,7 +49,9 @@ class Occurences extends AlaBase{
     private function _fieldResult($result){
         $r = array();
         foreach($result->fieldResult as $item){
-            $r[$item->label] = $item->count;
+            if(!empty($item->label) && isset($item->count)){
+                $r[$item->label] = $item->count;
+            }
         }
         return $r;
     }
