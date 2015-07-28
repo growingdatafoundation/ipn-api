@@ -34,8 +34,6 @@ class Groups extends Ala\AlaBase{
     }
 
     public function compile(){
-        $this->count = $this->body->totalRecords;
-
         foreach((array)$this->body as $group){
             if(!empty($group->name) && isset($group->count)){
                 if(strtolower($group->name) == 'all_species' ){
@@ -45,7 +43,6 @@ class Groups extends Ala\AlaBase{
                 $this->groups[$this->humanize($group->name)] = $group->count;
             }
         }
-
     }
 
     /**
