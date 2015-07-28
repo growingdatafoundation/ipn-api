@@ -147,7 +147,10 @@ class Details extends Ala\AlaBase{
         }
         foreach((array)$this->body->images as $image){
             $img = new \StdClass;
-            $img->source = $this->property('sourceName', $image);
+            $img->source = $this->property('infoSourceName', $image);
+            if(!$img->source){
+                $img->source = $this->property('infoSourceUrl', $image);
+            }
             $img->contentType = $this->property('contentType', $image);
             $img->thumbnail = $this->property('thumbnail', $image);
             $img->title = $this->property('title', $image);

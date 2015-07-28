@@ -24,8 +24,8 @@ $aggregator->set('ala.species.details', $groups);
 
 if (isset($_GET['dump'])) {
     \Api\View::serviceHeaders('html');
-    //dump(json_decode(json_encode($aggregator)));
-    print json_encode($aggregator, JSON_PRETTY_PRINT);
+    dump(json_decode(json_encode($aggregator)));
+    //print json_encode($aggregator, JSON_PRETTY_PRINT);
     exit(1);
 }
 

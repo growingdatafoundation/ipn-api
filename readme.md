@@ -140,60 +140,6 @@ Params:
 }
 ```
 
-## ala.explore.groups
-
-```
-/ala.explore.groups.php?lat=-34.928726&lon=138.59994&radius=5&dump=1
-```
-* returns counts of all species groups for a given location
-
-Params:
-
- * `lat`: latitude
- * `lon`: longitude
- * `rad`: radius
- * `dump` (optional, debug!): pretty-dumps json for debugging
-
-### Example response:
-
-```
-{
-    "ala": {
-        "explore": {
-            // curl response status
-            "_status": 200,
-            //all species
-            "count": 105858,
-            //sorted by groups
-            "groups": {
-                " Animals": 99633,
-                " Mammals": 341,
-                " Birds": 93738,
-                " Reptiles": 135,
-                " Amphibians": 498,
-                " Fish": 173,
-                " Molluscs": 148,
-                " Arthropods": 4558,
-                " Crustaceans": 13,
-                " Insects": 3759,
-                " Plants": 5405,
-                " Bryophytes": 29,
-                " Gymnosperms": 15,
-                " Ferns And Allies": 21,
-                " Angiosperms": 5304,
-                " Monocots": 1674,
-                " Dicots": 3630,
-                " Fungi": 116,
-                " Chromista": 18,
-                " Protozoa": 8,
-                " Bacteria": 0,
-                " Algae": 13
-            }
-        }
-    }
-}
-```
-
 ## ala.species.details
 
 ```javascript
@@ -259,7 +205,7 @@ Params:
                 // empty array if no data
                 "images": [
                     {
-                        "source": null,
+                        "source": "Encyclopedia of Life",
                         "contentType": "image\/jpeg",
                         "thumbnail": "http:\/\/bie.ala.org.au\/repo\/1051\/187\/1874162\/thumbnail.jpg",
                         "title": "Acacia penninervis"
@@ -322,6 +268,61 @@ example of pouplated array for an endangered species: Macrotis lagotis (Bilby): 
     }
 }
 
+```
+
+
+## ala.explore.groups
+
+```
+/ala.explore.groups.php?lat=-34.928726&lon=138.59994&radius=5&dump=1
+```
+* returns counts of all species groups for a given location
+
+Params:
+
+ * `lat`: latitude
+ * `lon`: longitude
+ * `rad`: radius
+ * `dump` (optional, debug!): pretty-dumps json for debugging
+
+### Example response:
+
+```
+{
+    "ala": {
+        "explore": {
+            // curl response status
+            "_status": 200,
+            //all species
+            "count": 105858,
+            //sorted by groups
+            "groups": {
+                " Animals": 99633,
+                " Mammals": 341,
+                " Birds": 93738,
+                " Reptiles": 135,
+                " Amphibians": 498,
+                " Fish": 173,
+                " Molluscs": 148,
+                " Arthropods": 4558,
+                " Crustaceans": 13,
+                " Insects": 3759,
+                " Plants": 5405,
+                " Bryophytes": 29,
+                " Gymnosperms": 15,
+                " Ferns And Allies": 21,
+                " Angiosperms": 5304,
+                " Monocots": 1674,
+                " Dicots": 3630,
+                " Fungi": 116,
+                " Chromista": 18,
+                " Protozoa": 8,
+                " Bacteria": 0,
+                " Algae": 13
+            }
+        }
+    }
+}
 ```
 
 # Mongo Cache
