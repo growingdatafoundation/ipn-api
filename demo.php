@@ -56,7 +56,7 @@ function themeLink($href){
                 <tr>
                     <th>Occurences + species, groups<br><small>location</small></th>
                     <td>Occurences of <em>Acacia</em> in Adelaide <strong>plus</strong> species short and species groups</td>
-                    <?php themeLink('i/ala.occurences.php?include=ala.species,ala.explore.groups&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5'); ?>
+                    <?php themeLink('/ala.occurences.php?include=ala.species,ala.explore.groups&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5'); ?>
                 </tr>
                 <tr>
                     <th>Species</th>
