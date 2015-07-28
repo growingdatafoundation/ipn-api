@@ -287,7 +287,7 @@ Params:
 
 ### Example response:
 
-```
+```javascript
 {
     "ala": {
         "explore": {
