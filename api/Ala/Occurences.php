@@ -14,7 +14,6 @@ class Occurences extends AlaBase{
     public $_status = false;
 
     public $count = 0;
-    public $_status = false;
     public $common_name = array();
     public $taxon_name = array();
 
