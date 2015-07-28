@@ -2,7 +2,7 @@
 require_once ('./bootstrap.php');
 
 /**
- * /ala.occurences.php?include=ala.details&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5&dump=1
+ * /ala.explore.groups.php?include=ala.details&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5&dump=1
  */
 
 /**

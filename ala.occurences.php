@@ -25,10 +25,6 @@ if (!isset($_GET['radius'])) {// latitude
     \Api\View::out(400, 'Invalid parameters: `radius` required.');
 }
 
-if (!isset($_GET['include'])) {// selected template
-    \Api\View::out(400, 'Invalid parameters: `include` required.');
-}
-
 $aggregator = new \Api\Aggregator();
 
 /**
@@ -41,15 +37,20 @@ $aggregator->set('ala.occurences', $occurences);
 /**
  * Additional modules
  */
- // get species names for included modules
-$species = array_keys($occurences->taxon_name);
-$modules = $aggregator->parseModules($_GET['include']);
-
-foreach((array)$modules as $module){
-    $service = $aggregator->moduleToNamespacedClass($module);
-    if(class_exists($service)){
-        $data = new $service(array('taxon_name' => $species));
-        $aggregator->set($module, $data);
+if (isset($_GET['include'])){
+    // get species names for included modules
+    $species = array_keys($occurences->taxon_name);
+    $modules = $aggregator->parseModules($_GET['include']);
+    
+    // add species for modules who require this, keep location data for modules who require them
+    $_GET['taxon_name'] = $species; 
+    
+    foreach((array)$modules as $module){
+        $service = $aggregator->moduleToNamespacedClass($module);
+        if(class_exists($service)){ 
+            $data = new $service($_GET);
+            $aggregator->set($module, $data);
+        }
     }
 }
 

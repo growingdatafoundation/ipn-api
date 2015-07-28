@@ -24,7 +24,7 @@ Recomended: The `ApiConfig.php` should be moved out of the `htdocs`. Update the 
 
 Params:
 
- * `include`: modules to include (see below), multiple dataset can becombined as a comm-separated list
+ * `include` (optional): modules to include (see below), multiple dataset can be combined as a comma-separated list
  * `bname`: binomial name search (starts with), currently interpreted as [genus](https://en.wikipedia.org/wiki/Genus)
  * `lat`: latitude
  * `lon`: longitude
