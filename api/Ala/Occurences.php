@@ -12,18 +12,27 @@ class Occurences extends AlaBase{
 
     private $body;
     public $_status = false;
-
+    public $_errors = array();
+    
     public $count = 0;
     public $common_name = array();
     public $taxon_name = array();
 
-    function __construct($request, $qid = false){
+    function __construct($request, $hasWkt = false){
         parent::__construct();
-        if($qid){
-            $this->qidRequest($request, $qid);
+        
+        if($hasWkt){
+            $cached = $this->paramsCacheQuery($request);
+            if($cached->status != 200){
+                $this->_status = $response->status;
+                $this->_errors = $response->errors;
+                return false;
+            }
+            $this->qidRequest($request, $cached->body);
         }else{
             $this->request($request);
         }
+    
         $this->compile();
     }
     

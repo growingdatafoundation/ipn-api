@@ -5,11 +5,14 @@ use \Api\Ala as Ala;
 
 /**
  * Species aggregator for different ala calls, in future to be extended
- */
+ */ 
 
 class Groups extends Ala\AlaBase{
 
     private $body;
+    public $_status = false;
+    public $_errors = array();
+    
     public $count = 0;//total
     public $groups = array();
 
@@ -20,6 +23,12 @@ class Groups extends Ala\AlaBase{
     }
 
     public function request($request){
+        if(isset($request['wkt'])){
+            $this->_status = 400;
+            $this->count = false;
+            $this->_errors[] = 'No polygon requests supported';
+            return;
+        }
         $curl = new \Api\Curl\Client();
         $response = $curl->get(
             'http://biocache.ala.org.au/ws/explore/groups',

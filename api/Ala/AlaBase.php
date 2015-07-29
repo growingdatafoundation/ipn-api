@@ -11,6 +11,24 @@ class AlaBase{
     }
 
     /**
+     * Occurence query cache request
+     * @see self::qidRequest
+     */
+    public function paramsCacheQuery($request){
+        $curl = new \Api\Curl\Client();
+        $response = $curl->post(
+            'http://biocache.ala.org.au/ws/webportal/params',
+            null,
+            array(
+                'wkt'    => $request['wkt']
+            ),
+            false
+        );
+        return $response;
+    }
+    
+
+    /**
      * @param array $param request params ($_GT,$_POST or $_REQUEST) or already extracted sub-set request
      * @param string $key optional, sub-set key to look for in $param
      * @return array

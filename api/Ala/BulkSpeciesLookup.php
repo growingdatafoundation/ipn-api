@@ -5,7 +5,8 @@ class BulkSpeciesLookup extends AlaBase{
 
     private $body;
     public $_status = false;
-
+    public $_errors = array();
+    
     public $species = array();
 
     function __construct($request){

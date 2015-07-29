@@ -8,6 +8,9 @@ namespace Api\Ala;
 class DensityMap extends AlaBase{
 
     private $body;
+    public $_status = 200;
+    public $_errors = array();
+    
     public $australia;
 
     function __construct($request){

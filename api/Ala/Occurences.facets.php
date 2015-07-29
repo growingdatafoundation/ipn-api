@@ -13,6 +13,7 @@ class Occurences extends AlaBase{
 
     private $body;
     public $_status = false;
+    public $_errors = array();
 
     public $totalRecords = 0;
     public $status = false;

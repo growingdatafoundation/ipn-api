@@ -9,6 +9,8 @@ class Species extends AlaBase{
 
     private $body;
     public $_status = false;
+    public $_errors = array();
+     
     public $species;
 
     function __construct($request){

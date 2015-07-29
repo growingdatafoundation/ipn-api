@@ -10,6 +10,7 @@ use \Api\Ala as Ala;
 class Details extends Ala\AlaBase{
     private $body;
     public $_status = false;
+    public $_errors = array();
 
     public $name;
     public $isAustralian;

@@ -39,6 +39,8 @@ Params:
 
 ### POST
 
+Submit a wkt plygon string
+
 ```
 /ala.occurences.php?include=ala.species&bname=Acacia
 /ala.occurences.php
@@ -59,6 +61,10 @@ available modules:
  * `ala.explore.groups`: counts number of secies by group for a location/region
 
 Modules can be set with the `include` parameter. Multiple modules as comm-separated list, e.g. `include=ala.species,ala.explore.groups`
+
+Note, `ala.explore.groups` works only in GET mode. ALA doesn't suppot polygons for group counts. The api doens't break when included into POST, but will log a `_status` 400'.
+
+`"ala":{ ... "explore":{"groups":{"_status":400,"_errors":["No polygon requests supported"],"count":false,"groups":[]}}}}`
  
 ### Response
 
@@ -71,6 +77,8 @@ Example response with `include=ala.species`
         "occurences": {
             // curl response status
             "_status": 200,
+            // messages may be logged when _status != 200
+            "_errors": [], 
             // total records found
             "count": 107,
             // occurences count by species: common name
@@ -92,6 +100,8 @@ Example response with `include=ala.species`
         "species": {
             // curl response status
             "_status": 200,
+            // messages may be logged when _status != 200
+            "_errors": [], 
             // species module - species are indexed by taxonomy name
             "species": {
                 "Acacia": {
@@ -147,6 +157,8 @@ Params:
         "species": {
             // curl response status
             "_status": 200,
+            // messages may be logged when _status != 200
+            "_errors": [], 
             "species": {
                 "Acacia penninervis": {
                     // taxonomy concept id: see ala.species.details
@@ -190,6 +202,8 @@ Params:
             "details": {,
                 // curl response status
                 "_status": 200,
+                // messages may be logged when _status != 200
+                "_errors": [], 
                 "name": "Acacia penninervis",
                 "isAustralian": true,
                 // properties are string or null
@@ -324,6 +338,8 @@ Params:
         "explore": {
             // curl response status
             "_status": 200,
+            // messages may be logged when _status != 200
+            "_errors": [], 
             //all species
             "count": 105858,
             //sorted by groups
