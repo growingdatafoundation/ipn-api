@@ -36,7 +36,6 @@ Params:
  * `lon`: longitude
  * `rad`: radius
  * `dump` (optional, debug!): pretty-dumps json for debugging
-``` 
 
 ### POST
 
@@ -302,10 +301,13 @@ example of pouplated array for an endangered species: Macrotis lagotis (Bilby): 
 
 ## ala.explore.groups
 
+* returns counts of all species groups for a given location
+
+### GET
+
 ```
 /ala.explore.groups.php?lat=-34.928726&lon=138.59994&radius=5&dump=1
 ```
-* returns counts of all species groups for a given location
 
 Params:
 
