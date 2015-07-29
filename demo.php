@@ -54,6 +54,10 @@ function wktform($href, $wkt){
                 color: #666666;
                 font-weight: normal;
             }
+            td pre{
+                max-width: 500px;
+                overflow: auto;
+            }
         </style>
     </head>
 
@@ -114,6 +118,15 @@ function wktform($href, $wkt){
                     <th><small>GET</small></th>
                     <td>The number species per group for a location (e.g. Plants, Birds, etc)</td>
                     <?php themeLink('/ala.explore.groups.php?include=ala.details&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5'); ?>
+                </tr>
+                <tr>
+                    <th>Total and distinct species count for a specific group<br><small>location(lat,lon,radius)</small></th>
+                    <th><small>GET</small></th>
+                    <td>
+                        Count total and distinct species of a specific group for a location (e.g. Plants, Birds, etc). Allowed values:
+                        <small><pre>"Animals", "Mammals", "Birds", "Reptiles", "Amphibians", "Fish", "Molluscs", "Arthropods", "Crustaceans", "Insects", "Plants", "Bryophytes", "Gymnosperms", "FernsAndAllies", "Monocots", "Dicots", "Fungi", "Chromista", "Protozoa", "Bacteria", "Algae"</pre></small>
+                    </td>
+                    <?php themeLink('/ala.explore.group.php?group_name=Birds&lat=-34.928726&lon=138.59994&radius=5'); ?>
                 </tr>
             </tbody>
         </table>

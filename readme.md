@@ -65,7 +65,7 @@ Modules can be set with the `include` parameter. Multiple modules as comm-separa
 Note, `ala.explore.groups` works only in GET mode. ALA doesn't suppot polygons for group counts. The api doens't break when included into POST, but will log a `_status` 400'.
 
 `"ala":{ ... "explore":{"groups":{"_status":400,"_errors":["No polygon requests supported"],"count":false,"groups":[]}}}}`
- 
+
 ### Response
 
 Example response with `include=ala.species`
@@ -78,7 +78,7 @@ Example response with `include=ala.species`
             // curl response status
             "_status": 200,
             // messages may be logged when _status != 200
-            "_errors": [], 
+            "_errors": [],
             // total records found
             "count": 107,
             // occurences count by species: common name
@@ -101,7 +101,7 @@ Example response with `include=ala.species`
             // curl response status
             "_status": 200,
             // messages may be logged when _status != 200
-            "_errors": [], 
+            "_errors": [],
             // species module - species are indexed by taxonomy name
             "species": {
                 "Acacia": {
@@ -158,7 +158,7 @@ Params:
             // curl response status
             "_status": 200,
             // messages may be logged when _status != 200
-            "_errors": [], 
+            "_errors": [],
             "species": {
                 "Acacia penninervis": {
                     // taxonomy concept id: see ala.species.details
@@ -203,7 +203,7 @@ Params:
                 // curl response status
                 "_status": 200,
                 // messages may be logged when _status != 200
-                "_errors": [], 
+                "_errors": [],
                 "name": "Acacia penninervis",
                 "isAustralian": true,
                 // properties are string or null
@@ -312,7 +312,6 @@ example of pouplated array for an endangered species: Macrotis lagotis (Bilby): 
 
 ```
 
-
 ## ala.explore.groups
 
 * returns counts of all species groups for a given location
@@ -339,7 +338,7 @@ Params:
             // curl response status
             "_status": 200,
             // messages may be logged when _status != 200
-            "_errors": [], 
+            "_errors": [],
             //all species
             "count": 105858,
             //sorted by groups
@@ -371,6 +370,46 @@ Params:
     }
 }
 ```
+
+## ala.explore.group
+
+* returns counts of all species groups for a given location
+
+### GET
+
+```
+/ala.explore.group.php?group_name=Birds&lat=-34.928726&lon=138.59994&radius=5
+```
+
+Params:
+
+ * `group_name`: zoological  name of the species group, allowecd names: see example response for *ala.explore.groups*
+ * `lat`: latitude
+ * `lon`: longitude
+ * `rad`: radius
+ * `dump` (optional, debug!): pretty-dumps json for debugging
+
+### Example response:
+
+```javascript
+{
+    "ala": {
+        "explore": {
+            "group": {
+                // curl response status
+                "_status": 200,
+                // messages may be logged when _status != 200
+                "_errors": [],
+                "count": {
+                    "total": 93738,
+                    "distinct": 380
+                }
+            }
+        }
+    }
+}
+```
+* `_status` is set to `400` if group name is invalid
 
 # Mongo Cache
 

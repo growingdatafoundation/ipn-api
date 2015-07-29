@@ -7,14 +7,16 @@ use \Api\Ala as Ala;
  * Species aggregator for different ala calls, in future to be extended
  */
 
-class Groups extends Ala\AlaBase{
+class Group extends Ala\AlaBase{
 
     private $body;
     public $_status = false;
     public $_errors = array();
 
-    public $count = 0;//total
-    public $groups = array();
+    public $count = array(
+        'total' => null,
+        'distinct' => null,
+    );
 
     function __construct($request){
         parent::__construct();
@@ -32,9 +34,17 @@ class Groups extends Ala\AlaBase{
             return;
         }
 
+        $request['group_name'] = (!empty($request['group_name'])) ? $request['group_name'] : null;
+        $group = $this->validateGroupName($request['group_name']);
+        if(!$group){
+            $this->_status = 400;
+            $this->_errors[] = 'Invalid group name';
+            return;
+        }
+
         $curl = new \Api\Curl\Client();
         $response = $curl->get(
-            'http://biocache.ala.org.au/ws/explore/groups',
+            'http://biocache.ala.org.au/ws/explore/counts/group/'.ucfirst($request['group_name']),
             array(
                 'lat'    => $request['lat'],
                 'lon'    => $request['lon'],
@@ -46,22 +56,30 @@ class Groups extends Ala\AlaBase{
     }
 
     public function compile(){
-        foreach((array)$this->body as $group){
-            if(!empty($group->name) && isset($group->count)){
-                if(strtolower($group->name) == 'all_species' ){
-                    $this->count = $group->count;
-                    continue;
-                }
-                $this->groups[$this->humanize($group->name)] = $group->count;
-            }
+        if(!is_array($this->body)){
+            $this->_status = 520;
+            $this->_errors[] = 'Invalid response, array expected';
+        }
+        if(isset($this->body[0])){
+            $this->count['total'] = $this->body[0];
+        }
+        if(isset($this->body[1])){
+            $this->count['distinct'] = $this->body[1];
         }
     }
 
     /**
      * deals with camelcase labels: 'FernsAndAllies'
      */
-    private function humanize($str){
-        return preg_replace('/(?!^)[A-Z]{2,}(?=[A-Z][a-z])|[A-Z][a-z]/', ' $0', $str);
+    private function validateGroupName($name){
+        if(!$name){
+            return false;
+        }
+        $name = ucfirst($name);
+        if(!in_array($name, \Api\Config::$speciesGroups)){
+            return false;
+        }
+        return $name;
     }
 
 }
