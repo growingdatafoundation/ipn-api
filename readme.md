@@ -371,6 +371,8 @@ Params:
 }
 ```
 
+* responds with "_status": 400 and no data when included as module into `POST ala.occurrences`. ALA api doesn't support geo polygons for groups.
+
 ## ala.explore.group
 
 * returns counts of all species groups for a given location
@@ -410,6 +412,7 @@ Params:
 }
 ```
 * `_status` is set to `400` if group name is invalid
+* responds with "_status": 400 and no data when included as module into `POST ala.occurrences`. ALA api doesn't support geo polygons for groups.
 
 # Mongo Cache
 
