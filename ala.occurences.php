@@ -33,7 +33,7 @@ if($isLocationRequest){
 
 if($isRegionRequest){
     if (empty($_POST['wkt'])) {// wkt string
-        \Api\View::out(400, 'Invalid parameters: `wkt` required.');
+        \Api\View::out(400, 'Invalid parameters: `wkt` is empty.');
     }
     $request = $_REQUEST;
 }
@@ -59,12 +59,12 @@ if (isset($_GET['include'])){
     $modules = $aggregator->parseModules($_GET['include']);
     
     // add species for modules who require this, keep location data for modules who require them
-    $_GET['taxon_name'] = $species; 
+    $_REQUEST['taxon_name'] = $species; 
     
     foreach((array)$modules as $module){
         $service = $aggregator->moduleToNamespacedClass($module);
         if(class_exists($service)){ 
-            $data = new $service($_GET);
+            $data = new $service($_REQUEST);
             $aggregator->set($module, $data);
         }
     }
