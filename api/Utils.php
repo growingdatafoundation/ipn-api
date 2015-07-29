@@ -26,5 +26,19 @@ class Utils{
 
         return $r;
     }
+    
+    public static function alaRequiredGeoParams($request){
+        $validate = false;
+        
+        if (isset($_GET['wkt'])) {// latitude
+            return (!empty($_GET['wkt']));
+        }
+        
+        // lon, lat, radius
+        if(isset($_GET['lon']) || isset($_GET['lat'] || isset($_GET['radius']) {
+            return (!empty($_GET['lon']) && !empty($_GET['lat'] && !empty($_GET['radius']);
+        }
+
+    }
 
 }//c

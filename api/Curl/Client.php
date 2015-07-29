@@ -47,7 +47,7 @@ class Client{
 
     }
 
-    public function post($uri, $params = null, $data, $raw = false) {
+    public function post($uri, $params = null, $data, $json = true, $raw = false) {
 
         //reset response
         $this->response = new Response();
@@ -56,15 +56,23 @@ class Client{
         $endpoint = $this->endpoint($uri, $params);
 
         //curl
-        $json = json_encode($data);
+        
         $ch = $this->curlInit($endpoint);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($json))
-        );
+        
+        if($json){
+            $json = json_encode($data);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($json))
+            );
+        }else{
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain'));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        }
+        
         //response
         $result = curl_exec($ch);
         $this->validate($ch, $endpoint);

@@ -4,7 +4,7 @@ http://biocache.ala.org.au/ws/occurrences/search?q=Birds&fq=kingdom%3AANIMALIA&l
 
 examples from:http://api.ala.org.au/#ws75
 
-https://biocache.ala.org.au/ws/occurrences/search?q=genus:Macropus
+https://biocache.ala.org.au/ws/occurrences/search?q=genus:Macropus&
 http://biocache.ala.org.au/ws/occurrences/search?pageSize=0&q=genus:Macropus&fq=assertions:invalidCollectionDate
 
 

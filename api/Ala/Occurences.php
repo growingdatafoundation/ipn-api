@@ -17,12 +17,20 @@ class Occurences extends AlaBase{
     public $common_name = array();
     public $taxon_name = array();
 
-    function __construct($request){
+    function __construct($request, $qid = false){
         parent::__construct();
-        $this->request($request);
+        if($qid){
+            $this->qidRequest($request, $qid);
+        }else{
+            $this->request($request);
+        }
         $this->compile();
     }
-
+    
+    /**
+     * Location request
+     * @param array $request $_GET: required fields: lon, lat, rad, q
+     */
     public function request($request){
         $curl = new \Api\Curl\Client();
         $response = $curl->get(
@@ -32,6 +40,25 @@ class Occurences extends AlaBase{
                 'lat'    => $request['lat'],
                 'lon'    => $request['lon'],
                 'radius' => $request['radius']
+            )
+        );
+        $this->_status = $response->status;
+        $this->body = $response->body;
+    }
+
+    /**
+     * Region request (wkt polygon + occurence cache request)
+     * @see \Api\Ala\Occurences\Region
+     * @param array $request $_GET: required fields: q
+     * @param string $qid occurence query cache id, provided by http://biocache.ala.org.au/ws/webportal/params  
+     */
+    public function qidRequest($request, $qid){
+        $curl = new \Api\Curl\Client();
+        $response = $curl->get(
+            'http://biocache.ala.org.au/ws/occurrences/search',
+            array(
+                'q'      => 'qid:'.$qid,
+                'fq'     => 'genus:'.$request['bname']
             )
         );
         $this->_status = $response->status;

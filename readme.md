@@ -18,26 +18,50 @@ Recomended: The `ApiConfig.php` should be moved out of the `htdocs`. Update the 
 
 # ALA Occurences aggregator API
 
+## ala.occurences
+
+ * returns lists of occurrence counts of queried specimen for a given location
+
+### GET:
+
 ```
 /ala.occurences.php?include=ala.species&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5
 ```
 
 Params:
 
- * `include` (optional): modules to include (see below), multiple dataset can be combined as a comma-separated list
+ * `include` (optional): modules to include (see below)
  * `bname`: binomial name search (starts with), currently interpreted as [genus](https://en.wikipedia.org/wiki/Genus)
  * `lat`: latitude
  * `lon`: longitude
  * `rad`: radius
  * `dump` (optional, debug!): pretty-dumps json for debugging
+``` 
 
- `include` modules:
- * ala.species: fetches details for each returned species of occurence search
+### POST
 
-## ala.occurences
+```
+/ala.occurences.php?include=ala.species&bname=Acacia
+/ala.occurences.php
+```
 
- * returns lists of occurrence counts of queried specimen for a given location
+Params:
 
+ * `include` (optional): modules to include (see below)
+ * `bname`: binomial name search (starts with), currently interpreted as [genus](https://en.wikipedia.org/wiki/Genus)
+ * `wkt`: (POST field only) wkt string
+ * `dump` (optional, debug!): pretty-dumps json for debugging
+
+### Include modules
+
+available modules:
+
+ * `ala.species`: fetches details for each returned species of occurence search
+ * `ala.explore.groups`: counts number of secies by group for a location/region
+
+Modules can be set with the `include` parameter. Multiple modules as comm-separated list, e.g. `include=ala.species,ala.explore.groups`
+ 
+### Response
 
 Example response with `include=ala.species`
 
@@ -105,6 +129,8 @@ Example response with `include=ala.species`
 
  * returns information for a species
 
+### GET
+
 ```
 /ala.species.php?taxon_name=Acacia+penninervis
 ```
@@ -142,11 +168,14 @@ Params:
 
 ## ala.species.details
 
+* returns details about a species: description, images, conservation status, links classifications etc
+
+### GET
+
 ```javascript
 // Acacia penninervis
 /ala.species.details.php?guid=urn:lsid:biodiversity.org.au:apni.taxon:298661&dump=1
 ```
-* rturns details about a species: description, images, conservation status, links classifications etc
 
 Params:
 

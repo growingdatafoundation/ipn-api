@@ -5,24 +5,37 @@ require_once ('./bootstrap.php');
  * /ala.occurences.php?include=ala.details&bname=Acacia&lat=-34.928726&lon=138.59994&radius=5&dump=1
  */
 
+$isRegionRequest = isset($_POST['wkt']);
+$isLocationRequest = (!$isRegionRequest && (isset($_GET['lon']) || isset($_GET['lat']) || isset($_GET['radius'])));
+
 /**
  * Request > Validation, required params
  */
 
-if (!isset($_GET['bname'])) {// botanical name
+if (!isset($_REQUEST['bname'])) {// botanical name
     \Api\View::out(400, 'Invalid parameters: `bname` required.');
 }
 
-if (!isset($_GET['lon'])) {// longitude
-    \Api\View::out(400, 'Invalid parameters: `lon` required.');
+if($isLocationRequest){
+    if (!isset($_GET['lon'])) {// longitude
+        \Api\View::out(400, 'Invalid parameters: `lon` required.');
+    }
+    
+    if (!isset($_GET['lat'])) {// latitude
+        \Api\View::out(400, 'Invalid parameters: `lat` required.');
+    }
+    
+    if (!isset($_GET['radius'])) {// latitude
+        \Api\View::out(400, 'Invalid parameters: `radius` required.');
+    }
+    $request = $_GET;
 }
 
-if (!isset($_GET['lat'])) {// latitude
-    \Api\View::out(400, 'Invalid parameters: `lat` required.');
-}
-
-if (!isset($_GET['radius'])) {// latitude
-    \Api\View::out(400, 'Invalid parameters: `radius` required.');
+if($isRegionRequest){
+    if (empty($_POST['wkt'])) {// wkt string
+        \Api\View::out(400, 'Invalid parameters: `wkt` required.');
+    }
+    $request = $_REQUEST;
 }
 
 $aggregator = new \Api\Aggregator();
@@ -30,8 +43,11 @@ $aggregator = new \Api\Aggregator();
 /**
  * Base Module: Occurences
  */
-
-$occurences = new \Api\Ala\Occurences($_GET);
+if($isRegionRequest) {
+    $occurences = new \Api\Ala\Occurences\Region($_REQUEST);
+}else{
+    $occurences = new \Api\Ala\Occurences($_GET);
+}
 $aggregator->set('ala.occurences', $occurences);
 
 /**
