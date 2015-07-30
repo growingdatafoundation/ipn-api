@@ -13,14 +13,16 @@ class Occurences extends AlaBase{
     private $body;
     public $_status = false;
     public $_errors = array();
-    
+
+    private $defaultQ = '';//Query of the form field:value e.g. q=genus:Macropus
+
     public $count = 0;
     public $common_name = array();
     public $taxon_name = array();
 
     function __construct($request, $hasWkt = false){
         parent::__construct();
-        
+
         if($hasWkt){
             $cached = $this->paramsCacheQuery($request);
             if($cached->status != 200){
@@ -32,10 +34,10 @@ class Occurences extends AlaBase{
         }else{
             $this->request($request);
         }
-    
+
         $this->compile();
     }
-    
+
     /**
      * Location request
      * @param array $request $_GET: required fields: lon, lat, rad, q
@@ -45,7 +47,7 @@ class Occurences extends AlaBase{
         $response = $curl->get(
             'http://biocache.ala.org.au/ws/occurrences/search',
             array(
-                'q'      => 'genus:'.$request['bname'],
+                'q'      => $this->buildQ($request['bname']),
                 'lat'    => $request['lat'],
                 'lon'    => $request['lon'],
                 'radius' => $request['radius']
@@ -59,7 +61,7 @@ class Occurences extends AlaBase{
      * Region request (wkt polygon + occurence cache request)
      * @see \Api\Ala\Occurences\Region
      * @param array $request $_GET: required fields: q
-     * @param string $qid occurence query cache id, provided by http://biocache.ala.org.au/ws/webportal/params  
+     * @param string $qid occurence query cache id, provided by http://biocache.ala.org.au/ws/webportal/params
      */
     public function qidRequest($request, $qid){
         $curl = new \Api\Curl\Client();
@@ -102,5 +104,12 @@ class Occurences extends AlaBase{
             }
         }
         return false;
+    }
+
+    private function buildQ($q){
+        if(!strpos($q, ':')){
+            return (empty($this->defaultQ)) ? $q : $this->defaultQ.':'.$q;
+        }
+        return $q;
     }
 }
