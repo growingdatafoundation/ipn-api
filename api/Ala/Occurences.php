@@ -14,8 +14,6 @@ class Occurences extends AlaBase{
     public $_status = false;
     public $_errors = array();
 
-    private $defaultQ = '';//Query of the form field:value e.g. q=genus:Macropus
-
     public $count = 0;
     public $common_name = array();
     public $taxon_name = array();
@@ -69,7 +67,7 @@ class Occurences extends AlaBase{
             'http://biocache.ala.org.au/ws/occurrences/search',
             array(
                 'q'      => 'qid:'.$qid,
-                'fq'     => 'genus:'.$request['bname']
+                'fq'     => $this->buildQ($request['bname']),
             )
         );
         $this->_status = $response->status;
@@ -106,10 +104,4 @@ class Occurences extends AlaBase{
         return false;
     }
 
-    private function buildQ($q){
-        if(!strpos($q, ':')){
-            return (empty($this->defaultQ)) ? $q : $this->defaultQ.':'.$q;
-        }
-        return $q;
-    }
 }

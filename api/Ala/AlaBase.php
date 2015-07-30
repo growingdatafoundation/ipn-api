@@ -7,6 +7,8 @@ namespace Api\Ala;
 
 class AlaBase{
 
+    private $defaultQ = '';//Query of the form field:value e.g. q=genus:Macropus
+
     function __construct(){
     }
 
@@ -26,7 +28,7 @@ class AlaBase{
         );
         return $response;
     }
-    
+
 
     /**
      * @param array $param request params ($_GT,$_POST or $_REQUEST) or already extracted sub-set request
@@ -48,4 +50,13 @@ class AlaBase{
         return (isset($item->{$property})) ? $item->{$property} : $returnEmpty;
     }
 
+    /**
+     * q: query for occurences
+     */
+    protected function buildQ($q){
+        if(!strpos($q, ':')){
+            return (empty($this->defaultQ)) ? $q : $this->defaultQ.':'.$q;
+        }
+        return $q;
+    }
 }

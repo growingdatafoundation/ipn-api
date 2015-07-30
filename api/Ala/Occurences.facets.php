@@ -31,7 +31,7 @@ class Occurences extends AlaBase{
         $curl = new \Api\Curl\Client();
         $response = $curl->get('http://biocache.ala.org.au/ws/occurrence/facets',
             array(
-                'q' => 'genus:'.$request['bname'],
+                'q'      => $this->buildQ($request['bname']),
                 'facets' => 'taxon_name',
                 'lat' => $request['lat'],
                 'lon' => $request['lon'],
