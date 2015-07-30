@@ -78,15 +78,15 @@ function wktform($href, $wkt, $name = ''){
                     <?php themeLink('/ala.occurences.php?bname=Acacia&lat=-34.928726&lon=138.59994&radius=5'); ?>
                 </tr>
                 <tr>
-                    <th>Occurences + species<br><small>region(wkt polygon)</small></th>
+                    <th>Occurences<br><small>region(wkt polygon)</small></th>
                     <th><small>POST</small></th>
-                    <td>Occurences of <em>Acacia</em> around Frazer Island <strong>plus</strong> species short</td>
+                    <td>Occurences of <em>Acacia</em> around Frazer Island</td>
                     <?php wktForm('/ala.occurences.php', $wktBioRegion, 'Acacia anceps'); ?>
                 </tr>
                 <tr>
                     <th>Occurences + species<br><small>region(wkt polygon)</small></th>
                     <th><small>POST</small></th>
-                    <td>Occurences of <em>Acacia</em> around Frazer Island <strong>plus</strong> species short</td>
+                    <td>Occurences of <em>Acacia</em> around Frazer Island <strong>plus basic species data (images etc)</strong> </td>
                     <?php wktForm('/ala.occurences.php?include=ala.species', $wktBioRegion, 'Acacia brachybotrya'); ?>
                 </tr>
                 <!--
