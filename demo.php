@@ -75,7 +75,7 @@ function wktform($href, $wkt){
                     <th>Occurences + species<br><small>region(wkt polygon)</small></th>
                     <th><small>POST</small></th>
                     <td>Occurences of <em>Acacia</em> around Frazer Island <strong>plus</strong> species short</td>
-                    <?php wktForm('/ala.occurences.php?include=ala.species.groups&bname=Acacia', $wktBioRegion); ?>
+                    <?php wktForm('/ala.occurences.php?include=ala.species&bname=Acacia', $wktBioRegion); ?>
                 </tr>
                 <!--
                 <tr>
