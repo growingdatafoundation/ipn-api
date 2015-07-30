@@ -19,11 +19,11 @@ if(!$wkt){
     if (!isset($_GET['lon'])) {// longitude
         \Api\View::out(400, 'Invalid parameters: `lon` required.');
     }
-    
+
     if (!isset($_GET['lat'])) {// latitude
         \Api\View::out(400, 'Invalid parameters: `lat` required.');
     }
-    
+
     if (!isset($_GET['radius'])) {// latitude
         \Api\View::out(400, 'Invalid parameters: `radius` required.');
     }
@@ -54,13 +54,13 @@ if (isset($request['include'])){
     // get species names for included modules
     $species = array_keys($occurences->taxon_name);
     $modules = $aggregator->parseModules($request['include']);
-    
+
     // add species for modules who require this, keep location data for modules who require them
-    $request['taxon_name'] = $species; 
-    
+    $request['taxon_name'] = $species;
+
     foreach((array)$modules as $module){
         $service = $aggregator->moduleToNamespacedClass($module);
-        if(class_exists($service)){ 
+        if(class_exists($service)){
             $data = new $service($request, $wkt);
             $aggregator->set($module, $data);
         }
@@ -71,7 +71,7 @@ if (isset($request['include'])){
  * Debug: Dump
  */
 
-if (isset($request['dump'])) {// botanical name
+if (isset($request['dump']) && (int) $request['dump'] > 0) {
     \Api\View::serviceHeaders('html');
     dump(json_decode(json_encode($aggregator)));
     //print json_encode($aggregator, JSON_PRETTY_PRINT);

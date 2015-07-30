@@ -7,7 +7,7 @@ namespace Api\Ala;
 
 class AlaBase{
 
-    private $defaultQ = '';//Query of the form field:value e.g. q=genus:Macropus
+    private $defaultQ = 'taxon_name';//Query of the form field:value e.g. q=genus:Macropus
 
     function __construct(){
     }

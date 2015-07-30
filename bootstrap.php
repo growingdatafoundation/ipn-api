@@ -1,5 +1,5 @@
 <?php
-define('CONFIG_DEBUG', true);
+define('CONFIG_DEBUG', false);
 
 if(CONFIG_DEBUG){
     ini_set('display_errors', 1);

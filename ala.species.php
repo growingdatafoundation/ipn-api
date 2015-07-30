@@ -22,7 +22,7 @@ $aggregator->set('ala.species', $species);
  * Debug: Dump
  */
 
-if (isset($_GET['dump'])) {
+if (isset($request['dump']) && (int) $request['dump'] > 0) {
      \Api\View::serviceHeaders('html');
     dump(json_decode(json_encode($aggregator)));
     //print json_encode($aggregator, JSON_PRETTY_PRINT);

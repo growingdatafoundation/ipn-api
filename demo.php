@@ -14,17 +14,20 @@ function themeLink($href){
     <td><pre><?php print $href; ?></pre></td>
 <?php
 }
-function wktform($href, $wkt){
+function wktform($href, $wkt, $name = ''){
 ?>
-    <td>
-        <form id="<?php print uniqid('wktForm-1-');?>" method="post" action="<?php print BaseUrl.$href; ?>">
+    <td colspan="2">
+        <form id="<?php print uniqid('wktForm-2-');?>" method="post" action="<?php print BaseUrl.$href; ?>" class="pure-form">
         <input name="wkt" type="hidden" value="<?php print $wkt; ?>">
-        <input type="submit" class="button-xsmall pure-button" value="json">
-        </form>
-    </td>
-    <td>
-        <form id="<?php print uniqid('wktForm-2-');?>" method="post" action="<?php print BaseUrl.$href.'&dump=1'; ?>">
-        <input name="wkt" type="hidden" value="<?php print $wkt; ?>">
+
+        <p>
+            <label for="name">tanonomy_name:</label>
+            <input name="bname" type="text" value="<?php echo $name; ?>">
+        </p>
+        <p>
+             <input name="dump" type="radio" value="0" checked="checked"> json
+             <input name="dump" type="radio" value="1"> dump
+        </p>
         <input type="submit" class="button-xsmall pure-button" value="dump">
         </form>
     </td>
@@ -58,6 +61,9 @@ function wktform($href, $wkt){
                 max-width: 500px;
                 overflow: auto;
             }
+            td input[type=text]{
+                display: inline;
+            }
         </style>
     </head>
 
@@ -75,7 +81,13 @@ function wktform($href, $wkt){
                     <th>Occurences + species<br><small>region(wkt polygon)</small></th>
                     <th><small>POST</small></th>
                     <td>Occurences of <em>Acacia</em> around Frazer Island <strong>plus</strong> species short</td>
-                    <?php wktForm('/ala.occurences.php?include=ala.species&bname=anceps', $wktBioRegion); ?>
+                    <?php wktForm('/ala.occurences.php', $wktBioRegion, 'Acacia anceps'); ?>
+                </tr>
+                <tr>
+                    <th>Occurences + species<br><small>region(wkt polygon)</small></th>
+                    <th><small>POST</small></th>
+                    <td>Occurences of <em>Acacia</em> around Frazer Island <strong>plus</strong> species short</td>
+                    <?php wktForm('/ala.occurences.php?include=ala.species', $wktBioRegion, 'Acacia brachybotrya'); ?>
                 </tr>
                 <!--
                 <tr>
