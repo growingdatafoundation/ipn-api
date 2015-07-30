@@ -28,7 +28,7 @@ function wktform($href, $wkt, $name = ''){
              <input name="dump" type="radio" value="0" checked="checked"> json
              <input name="dump" type="radio" value="1"> dump
         </p>
-        <input type="submit" class="button-xsmall pure-button" value="dump">
+        <input type="submit" class="button-xsmall pure-button" value="Go">
         </form>
     </td>
     <td><pre><?php print $href; ?></pre></td>

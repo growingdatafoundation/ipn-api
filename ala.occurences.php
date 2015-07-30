@@ -42,6 +42,7 @@ $aggregator = new \Api\Aggregator();
 /**
  * Base Module: Occurences
  */
+
 $request = ($wkt) ? $_REQUEST : $_GET;
 $occurences = new \Api\Ala\Occurences($_REQUEST, $wkt);
 
@@ -50,6 +51,7 @@ $aggregator->set('ala.occurences', $occurences);
 /**
  * Additional modules
  */
+
 if (isset($request['include'])){
     // get species names for included modules
     $species = array_keys($occurences->taxon_name);
