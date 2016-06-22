@@ -1,7 +1,6 @@
 <?php
-$password = ""; //myname
-$mongo_string = "mongodb://kenny:{$password}@ds051160.mongolab.com:51160/gdf-dev";
-$mongo_db = "gdf-dev";
+$mongo_string = "";  //connection endpoint
+$mongo_db = ""; //database name
 
 //
 function mongo_connection(){
