@@ -1,5 +1,6 @@
 <?php
-$mongo_string = "mongodb://kenny:vietkhang@ds051160.mongolab.com:51160/gdf-dev";
+$password = ""; //myname
+$mongo_string = "mongodb://kenny:{$password}@ds051160.mongolab.com:51160/gdf-dev";
 $mongo_db = "gdf-dev";
 
 //
